@@ -31,6 +31,12 @@ const customers = [
   {
     id: '76d65c26-f784-44a2-ac19-586678f7c2f2',
     name: 'Jefferson Francisco',
+    email: 'jefferson@francisco.com',
+    image_url: '/customers/jefferson-francisco.png',
+  },
+  {
+    id: '48947534-2594-4936-9062-fec4b6a6442a',
+    name: 'Michael Novotny',
     email: 'michael@novotny.com',
     image_url: '/customers/michael-novotny.png',
   },
