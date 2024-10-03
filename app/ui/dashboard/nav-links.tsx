@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   UserGroupIcon,
@@ -6,6 +6,7 @@ import {
   DocumentDuplicateIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 
 // Map of links to display in the side navigation.
@@ -21,16 +22,20 @@ const links = [
 ];
 
 export default function NavLinks() {
-  
+  const pathname = usePathname();
   return (
     <>
       {links.map((link) => {
         const LinkIcon = link.icon;
         return (
           <Link
-            key={link.name}
+            key={link.href}
             href={link.href}
-            className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            className={
+              pathname === link.href
+                ? 'flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-blue-600 p-3 text-sm font-medium text-white hover:bg-blue-700 md:flex-none md:justify-start md:p-2 md:px-3'
+                : 'flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3'
+            }
           >
             <LinkIcon className="w-6" />
             <p className="hidden md:block">{link.name}</p>
