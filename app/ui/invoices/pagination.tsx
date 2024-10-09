@@ -13,12 +13,14 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
   const currentPage = Number(searchParams.get('page')) || 1;
   
   const createPageURL = (pageNumber: number | string) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
     params.set('page', pageNumber.toString());
     return `${pathname}?${params.toString()}`;
   };
   
-  const allPages = generatePagination(currentPage, totalPages);
+  const allPages = generatePagination(totalPages);
+
+
 
   return (
     <>
@@ -38,7 +40,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
             if (index === 0) position = 'first';
             if (index === allPages.length - 1) position = 'last';
             if (allPages.length === 1) position = 'single';
-            if (page === '...') position = 'middle';
+            if (typeof page === 'string') position = 'middle';
 
             return (
               <PaginationNumber

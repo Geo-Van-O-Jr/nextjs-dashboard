@@ -2,6 +2,7 @@ import { generateYAxis } from "@/app/lib/utils";
 import { CalendarIcon } from "@heroicons/react/24/outline";
 import { lusitana } from "@/app/ui/fonts";
 import { fetchRevenue } from "@/app/lib/data";
+import { ReactElement, JSXElementConstructor, ReactNode, AwaitedReactNode, Key } from "react";
 // This component is representational only.
 // For data visualization UI, check out:
 // https://www.tremor.so/
@@ -13,7 +14,9 @@ export default async function RevenueChart() {
   const revenue = await fetchRevenue(); // Fetch data inside the component
   const chartHeight = 350;
 
-  const { yAxisLabels, topLabel } = generateYAxis(revenue);
+  const yAxis = generateYAxis(revenue);
+  const topLabel = yAxis[0];
+
 
   if (!revenue || revenue.length === 0) {
     return <p className="mt-4 text-gray-400">No data available.</p>;
@@ -31,8 +34,8 @@ export default async function RevenueChart() {
               className="mb-6 hidden flex-col justify-between text-sm text-gray-400 sm:flex"
               style={{ height: `${chartHeight}px` }}
             >
-              {yAxisLabels.map((label) => (
-                <p key={label}>{label}</p>
+              {yAxis.map((label: boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<AwaitedReactNode> | Key | null | undefined) => (
+                <p key={label as Key}>{label}</p>
               ))}
             </div>
 

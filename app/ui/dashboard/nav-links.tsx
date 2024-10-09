@@ -1,47 +1,90 @@
-'use client';
+import Link from "next/link";
+import { Icons } from "@/app/components/icons";
+import { cn } from "@/app/lib/utils";
 
-import {
-  UserGroupIcon,
-  HomeIcon,
-  DocumentDuplicateIcon,
-} from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+// NOTE: Uncomment this code in Chapter 10
 
-
-// Map of links to display in the side navigation.
-// Depending on the size of the application, this would be stored in a database.
-const links = [
-  { name: 'Home', href: '/dashboard', icon: HomeIcon },
+const navigation = [
   {
-    name: 'Invoices',
-    href: '/dashboard/invoices',
-    icon: DocumentDuplicateIcon,
+    name: "Visão Geral",
+    href: "/dashboard",
+    icon: Icons.Dashboard,
+    current: false,
   },
-  { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
+  {
+    name: "Cadastros",
+    href: "/dashboard/customers",
+    icon: Icons.Users,
+    current: false,
+  },
+  {
+    name: "Vendas",
+    href: "/dashboard/invoices",
+    icon: Icons.Inbox,
+    current: false,
+  },
+  {
+    name: "Raio X",
+    href: "/dashboard/products",
+    icon: Icons.ShoppingBag,
+    current: false,
+  },
+  { name: "Conta Digital", href: "#", icon: Icons.CreditCard, current: false },
+  {
+    name: "Estoque",
+    href: "/dashboard/stock",
+    icon: Icons.Package,
+    current: false,
+  },
+  {
+    name: "Relatórios",
+    href: "/dashboard/repports",
+    icon: Icons.ChartBar,
+    current: false,
+  },
+  { name: "Financeiro", href: "#", icon: Icons.CurrencyDollar, current: false },
+  { name: "Fiscal", href: "#", icon: Icons.Scale, current: false },
+  { name: "Contabilidade", href: "#", icon: Icons.Calculator, current: false },
+  {
+    name: "Configurações",
+    href: "/dashboard/configurations",
+    icon: Icons.Settings,
+    current: false,
+  },
+  {
+    name: "Loja de Aplicativos",
+    href: "#",
+    icon: Icons.Archive,
+    current: false,
+  },
 ];
 
 export default function NavLinks() {
-  const pathname = usePathname();
   return (
-    <>
-      {links.map((link) => {
-        const LinkIcon = link.icon;
-        return (
+    <ul role="list" className="mt-4 space-y-1">
+      {navigation.map((item) => (
+        <li key={item.name}>
           <Link
-            key={link.href}
-            href={link.href}
-            className={
-              pathname === link.href
-                ? 'flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-blue-600 p-3 text-sm font-medium text-white hover:bg-blue-700 md:flex-none md:justify-start md:p-2 md:px-3'
-                : 'flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3'
-            }
+            href={item.href}
+            className={cn(
+              "group flex items-center rounded-md px-3 py-2 text-sm font-medium",
+              item.current
+                ? "bg-gray-100 text-gray-900"
+                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+            )}
           >
-            <LinkIcon className="w-6" />
-            <p className="hidden md:block">{link.name}</p>
+            {/* <item.icon
+              className={cn(
+                "mr-3 h-6 w-6 flex-shrink-0",
+                item.current
+                  ? "text-gray-900"
+                  : "text-gray-400 group-hover:text-gray-500"
+              )}
+            /> */}
+            {item.name}
           </Link>
-        );
-      })}
-    </>
+        </li>
+      ))}
+    </ul>
   );
 }

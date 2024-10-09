@@ -1,15 +1,26 @@
-import SideNav from '@/app/ui/dashboard/sidenav';
+import { ReactNode } from 'react'
+import AcmeLogo from '@/app/ui/acme-logo'
+import UserNav from '@/app/ui/user-nav'
+import Search from '@/app/ui/search'
+import Sidenav from '@/app/ui/dashboard/sidenav'
 
-export const experimental_ppr = true;
-
- 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-      <div className="w-full flex-none md:w-64">
-        <SideNav />
+    <div className="flex h-full min-h-screen w-full flex-col">
+      <div className="flex h-14 w-full items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm">
+        <AcmeLogo />
+        <div className="flex gap-2">
+          <Search />
+          <UserNav />
+        </div>
       </div>
-      <div className="flex-grow p-6 md:overflow-y-auto md:p-12">{children}</div>
+      <div className="flex h-full w-full grow">
+        <Sidenav />
+        <main className="relative flex w-full flex-1 overflow-auto bg-slate-100 p-6">
+          {children}
+        </main>
+      </div>
     </div>
-  );
+  )
 }
+
