@@ -150,4 +150,53 @@ const revenue = [
   { month: 'Dec', revenue: 4800 },
 ];
 
-export { users, customers, invoices, revenue };
+const products = [
+  {
+    id: '84e20c74-d24d-4d29-a09f-ef7874001695',
+    name: 'Wireless Noise-Canceling Headphones',
+    description: 'Immerse yourself in exceptional audio with our advanced noise-canceling technology.',
+    price: 299.99,
+    category: 'Electronics',
+    image_url: '/products/headphones.jpg',
+    stock: '120',
+  },
+  {
+    id: '3c5a897c-384d-484a-a09f-ef7874001696',
+    name: 'Ergonomic Office Chair',
+    description: 'Experience ultimate comfort and support during long work hours.',
+    price: 199.99,
+    category: 'Furniture',
+    image_url: '/products/office-chair.jpg',
+    stock: '50',
+  },
+  {
+    id: '95c2a78c-384d-484a-b09f-ef7874001697',
+    name: 'Modern Coffee Table',
+    description: 'Elevate your living space with this stylish and functional coffee table.',
+    price: 149.99,
+    category: 'Furniture',
+    image_url: '/products/coffee-table.jpg',
+    stock: '25',
+  },
+  {
+    id: '2f5b347c-384d-484a-c09f-ef7874001698',
+    name: 'Ultra HD Smart TV',
+    description: 'Enjoy stunning visuals and immersive entertainment with our latest smart TV.',
+    price: 599.99,
+    category: 'Electronics',
+    image_url: '/products/smart-tv.jpg',
+    stock: '30',
+  },
+  {
+    id: '7a5b347c-384d-484a-d09f-ef7874001699',
+    name: 'Professional Chef Knife Set',
+    description: 'Chop, slice, and dice like a pro with our premium chef knife set.',
+    price: 129.99,
+    category: 'Kitchen',
+    image_url: '/products/chef-knives.jpg',
+    stock: '75',
+  },
+];
+
+
+export { users, customers, invoices, revenue, products };

@@ -119,3 +119,129 @@ export async function deleteInvoice(id: string) {
     return { message: "Database Error: Failed to Delete Invoice." };
   }
 }
+ 
+export type ProductState = {
+  errors?: {
+    name?: string[];
+    description?: string[];
+    price?: string[];
+    category?: string[];
+    image_url?: string[];
+    stock?: string[];
+  };
+  message?: string | null;
+};
+
+
+const ProductSchema = z.object({
+  id: z.string(),
+  name: z.string({
+    invalid_type_error: "Product name is required.",
+  }),
+  description: z.string({
+    invalid_type_error: "Product description is required.",
+  }),
+  price: z.coerce
+    .number()
+    .gt(0, { message: "Please enter a price greater than $0." }),
+  category: z.string({
+    invalid_type_error: "Please select a category.",
+  }),
+  image_url: z.string({
+    invalid_type_error: "Image URL is required.",
+  }),
+  stock: z.string({
+    invalid_type_error: "Stock is required.",
+  }),
+});
+
+const CreateProduct = ProductSchema.omit({ id: true });
+const UpdateProduct = ProductSchema.omit({ id: true });
+
+export async function createProduct(prevState: State, formData: FormData) {
+  const validatedFields = CreateProduct.safeParse({
+    name: formData.get("name"),
+    description: formData.get("description"),
+    price: formData.get("price"),
+    category: formData.get("category"),
+    image_url: formData.get("image_url"),
+    stock: formData.get("stock"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to Create Product.",
+    };
+  }
+
+  const { name, description, price, category, image_url, stock } =
+    validatedFields.data;
+  const priceInCents = price * 100;
+
+  try {
+    await sql`
+    INSERT INTO products (name, description, price, category, image_url, stock)
+    VALUES (${name}, ${description}, ${priceInCents}, ${category}, ${image_url}, ${stock})
+  `;
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to Create Product.",
+    };
+  }
+
+  revalidatePath("/dashboard/products");
+  redirect("/dashboard/products");
+}
+
+export async function updateProduct(
+  id: string,
+  prevState: State,
+  formData: FormData,
+) {
+  const validatedFields = UpdateProduct.safeParse({
+    name: formData.get("name"),
+    description: formData.get("description"),
+    price: formData.get("price"),
+    category: formData.get("category"),
+    image_url: formData.get("image_url"),
+    stock: formData.get("stock"),
+  });
+ 
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update Product.',
+    };
+  }
+ 
+  const { name, description, price, category, image_url, stock } = validatedFields.data;
+  const priceInCents = price * 100;
+ 
+  try {
+    await sql`
+      UPDATE products
+      SET name = ${name}, description = ${description}, price = ${priceInCents}, category = ${category}, image_url = ${image_url}, stock = ${stock}
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    return { message: 'Database Error: Failed to Update Product.' };
+  }
+ 
+  revalidatePath('/dashboard/products');
+  redirect('/dashboard/products');
+}
+
+export async function deleteProduct(id: string) {
+  try {
+    await sql`
+      DELETE FROM products
+      WHERE id = ${id}
+    `;
+    revalidatePath("/dashboard/products");
+    return { message: "Deleted Product." };
+  } catch (error) {
+    return { message: "Database Error: Failed to Delete Product." };
+  }
+}
+ 
