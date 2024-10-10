@@ -1,14 +1,14 @@
-'use client'
-import Pagination from '@/app/ui/products/pagination'
-import Search from '@/app/ui/search'
-import Table from '@/app/ui/products/table'
-import { CreateProduct } from '@/app/ui/products/buttons'
-import { lusitana } from '@/app/ui/fonts'
-import { ProductsTableSkeleton } from '@/app/ui/skeletons'
-import { Suspense, useState } from "react";
-import { products as placeholderProducts } from '@/app/lib/placeholder-data'
-import { FormattedProductsTable } from '@/app/lib/definitions'
-import { useEffect } from 'react';
+// 'use client'
+// import Pagination from '@/app/ui/products/pagination'
+// import Search from '@/app/ui/search'
+// import Table from '@/app/ui/products/table'
+// import { CreateProduct } from '@/app/ui/products/buttons'
+// import { lusitana } from '@/app/ui/fonts'
+// import { ProductsTableSkeleton } from '@/app/ui/skeletons'
+// import { Suspense, useState } from "react";
+// import { products as placeholderProducts } from '@/app/lib/placeholder-data'
+// import { FormattedProductsTable } from '@/app/lib/definitions'
+// import { useEffect } from 'react';
 
 export default function ProductsPage() {
   return <p>Products</p>; 
