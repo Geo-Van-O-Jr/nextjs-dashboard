@@ -157,7 +157,7 @@ const products = [
     description: 'Immerse yourself in exceptional audio with our advanced noise-canceling technology.',
     price: 299.99,
     category: 'Electronics',
-    image_url: '/products/headphones.jpg',
+    image_url: '/products/headphones.png',
     stock: '120',
   },
   {

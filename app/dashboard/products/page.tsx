@@ -1,44 +1,49 @@
-// app/dashboard/products/page.tsx
-import Pagination from "@/app/ui/products/pagination"; // Adjust path if needed
-import Search from "@/app/ui/search"; 
-import Table from "@/app/ui/products/table"; // Adjust path if needed
-import { CreateProduct } from "@/app/ui/products/buttons"; // Adjust path if needed
-import { lusitana } from "@/app/ui/fonts";
-import { ProductsTableSkeleton } from "@/app/ui/skeletons"; // Adjust path if needed
-import { Suspense } from "react";
-import { fetchProductsPages, fetchProducts, fetchFilteredProducts } from "@/app/lib/data"; // Adjust path if needed
-import { FormattedProductsTable } from "@/app/lib/definitions"; // Adjust path if needed
+'use client'
+import Pagination from '@/app/ui/products/pagination'
+import Search from '@/app/ui/search'
+import Table from '@/app/ui/products/table'
+import { CreateProduct } from '@/app/ui/products/buttons'
+import { lusitana } from '@/app/ui/fonts'
+import { ProductsTableSkeleton } from '@/app/ui/skeletons'
+import { Suspense, useState } from "react";
+import { products as placeholderProducts } from '@/app/lib/placeholder-data'
+import { FormattedProductsTable } from '@/app/lib/definitions'
+import { useEffect } from 'react';
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: {
-    query?: string;
-    page?: string;
-  };
-}) {
-  const query = searchParams?.query || "";
-  const currentPage = Number(searchParams?.page) || 1;
-  
-  const [totalPages, products] = await Promise.all([fetchProductsPages(query, currentPage), fetchFilteredProducts(query)]);
-  
+export default function ProductsPage() {
+  const [products, setProducts] = useState([...placeholderProducts]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const totalPages = 10;
 
   return (
-    <div className="w-full">
-      <div className="flex w-full items-center justify-between">
-        <h1 className={`${lusitana.className} text-2xl`}>Products</h1>
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <h1 className={`${lusitana.className} text-2xl md:text-3xl`}>Products</h1>
+        <CreateProduct />
       </div>
-      <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search />
-        <CreateProduct /> 
-      </div>
-      <Suspense key={query + currentPage} fallback={<ProductsTableSkeleton />}>
-        <Table products={products} /> 
+      <Search />
+      <Suspense fallback={<ProductsTableSkeleton />}>
+        <Table products={products as FormattedProductsTable[]} />
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} /> 
-      </div>
+      <Pagination totalPages={totalPages} />
     </div>
   );
 }

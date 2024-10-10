@@ -1,25 +1,41 @@
-'use client';
+"use client";
 
 import {
   UserGroupIcon,
   HomeIcon,
   DocumentDuplicateIcon,
-} from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
+  CurrencyDollarIcon,
+  ArrowLongUpIcon,
+  ArrowUpRightIcon,
+  ShoppingBagIcon,
+  PresentationChartBarIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const links = [
-  { name: 'Home', href: '/dashboard', icon: HomeIcon },
+  { name: "Home", href: "/dashboard", icon: HomeIcon },
   {
-    name: 'Invoices',
-    href: '/dashboard/invoices',
+    name: "Invoices",
+    href: "/dashboard/invoices",
     icon: DocumentDuplicateIcon,
   },
-  { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
-  { name: 'Products', href: '/dashboard/products', icon: UserGroupIcon }
+  { name: "Customers", href: "/dashboard/customers", icon: UserGroupIcon },
+  { name: "Products", href: "/dashboard/products", icon: ShoppingBagIcon },
+  { name: "Finantial", href: "/dashboard/finantial", icon: CurrencyDollarIcon },
+  {
+    name: "Analytics",
+    href: "/dashboard/analytics",
+    icon: PresentationChartBarIcon,
+  },
+  {
+    name: "Configurations",
+    href: "/dashboard/configurations",
+    icon: XCircleIcon,
+  },
 ];
 
 export default function NavLinks() {
@@ -34,8 +50,8 @@ export default function NavLinks() {
             href={link.href}
             className={
               pathname === link.href
-                ? 'flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-blue-600 p-3 text-sm font-medium text-white hover:bg-blue-700 md:flex-none md:justify-start md:p-2 md:px-3'
-                : 'flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3'
+                ? "flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-blue-600 p-3 text-sm font-medium text-white hover:bg-blue-700 md:flex-none md:justify-start md:p-2 md:px-3"
+                : "flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
             }
           >
             <LinkIcon className="w-6" />

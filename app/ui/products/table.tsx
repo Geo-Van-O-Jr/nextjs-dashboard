@@ -5,12 +5,26 @@ import {
   ProductsTableType,
   FormattedProductsTable,
 } from '@/app/lib/definitions';
+import { useState, useEffect } from 'react';
+
 
 export default async function ProductsTable({
   products,
 }: {
   products: FormattedProductsTable[];
-}) {
+}) {  
+    const [fetchedProducts, setFetchedProducts] = useState<ProductsTableType[]>([]);
+    useEffect(() => {
+      const fetchProducts = async () => {
+        const data = await fetch('/api/products');
+        const fetchedProducts = await data.json();
+        setFetchedProducts(fetchedProducts);
+        
+      };
+      fetchProducts(); 
+    }, []);
+
+
   return (
     <div className="w-full">
       <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
@@ -20,7 +34,7 @@ export default async function ProductsTable({
       <div className="mt-6 flow-root">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
-            <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0">
+            <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0 ">
               <div className="md:hidden">
                 {products?.map((product) => (
                   <div
@@ -78,7 +92,7 @@ export default async function ProductsTable({
                 </thead>
 
                 <tbody className="divide-y divide-gray-200 text-gray-900">
-                  {products.map((product) => (
+                  {fetchedProducts.map((product) => (
                     <tr key={product.id} className="group">
                       <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
                         <div className="flex items-center gap-3">
