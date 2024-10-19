@@ -1,13 +1,13 @@
 // c:\Users\geova\nextjs-dashboard\nextjs-dashboard-1\app\dashboard\products\page.tsx
 'use client';
-import Pagination from "@/app/ui/products/pagination"; // Update import path
+import Pagination from "@/app/ui/products/pagination";
 import Search from "@/app/ui/search"; 
-import Table from "@/app/ui/products/table"; // Update import path
-import { CreateProduct } from "@/app/ui/products/buttons"; // Update import path
+import ProductsTable from "@/app/ui/products/table";
+import { CreateProduct } from "@/app/ui/products/buttons";
 import { lusitana } from "@/app/ui/fonts"; 
-import { ProductsTableSkeleton } from "@/app/ui/skeletons"; // Update import path
+import { ProductsTableSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
-import { fetchProductsPages } from "@/app/lib/data"; // Update data fetching function
+import { fetchProductsPages } from "@/app/lib/data"; 
 
 export default async function ProductsPage({
   searchParams,
@@ -17,10 +17,12 @@ export default async function ProductsPage({
     page?: string;
   };
 }) {
-  const query = searchParams?.query || "";
-  const currentPage = Number(searchParams?.page) || 1;
+  // Await searchParams before accessing properties
+  const query = searchParams?.query || ""; 
+  const currentPage = Number(searchParams?.page) || 1; 
 
-  const totalPages = await fetchProductsPages(query); // Fetch product pages
+  const { products, totalPages } = await fetchProductsPages(query,currentPage);
+
 
   return (
     <div className="w-full">
@@ -32,7 +34,7 @@ export default async function ProductsPage({
         <CreateProduct /> {/* Use CreateProduct component */}
       </div>
       <Suspense key={query + currentPage} fallback={<ProductsTableSkeleton />}>
-        <Table query={query} currentPage={currentPage} /> 
+        <ProductsTable products={products} query={query} currentPage={currentPage} /> 
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />
