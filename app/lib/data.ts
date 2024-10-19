@@ -219,14 +219,21 @@ export async function fetchFilteredCustomers(query: string) {
   }
 }
 
+
+
 export async function fetchProducts(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
   try {
     const data = await sql<ProductField>`
       SELECT
         id,
         name
       FROM products
+      WHERE
+        products.name ILIKE ${`%${query}%`} -- Apply search query if any
       ORDER BY name ASC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
     const products = data.rows;
@@ -237,41 +244,26 @@ export async function fetchProducts(query: string, currentPage: number) {
   }
 }
 
-export async function fetchProductById(id: string) {
-  try {
-    const data = await sql<ProductsTableType>`
-      SELECT
-        *
-      FROM products
-      WHERE id = ${id};
-    `;
+export async function fetchProductsForCategory(categoryId: string, currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-    const product = data.rows.map((product) => ({
-      ...product,
-      // Convert amount from cents to dollars
-      price: product.price / 100,
-    }));
-    return product[0];
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch product.");
-  }
-}
-
-export async function fetchProductsForCategory(categoryId: string) {
   try {
     const data = await sql<ProductField>`
       SELECT
         id,
         name
       FROM products
+      WHERE 
+        products.category_id = ${categoryId} -- Assuming a category_id column
       ORDER BY name ASC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
     const products = data.rows;
     return products;
   } catch (err) {
     console.error("Database Error:", err);
+    throw new Error("Failed to fetch products for category."); 
   }
 }
 
