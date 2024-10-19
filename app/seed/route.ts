@@ -92,30 +92,30 @@ async function seedRevenue() {
   return insertedRevenue;
 }
 
-// async function seedProducts() {
-//   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-//   await client.sql`
-//      CREATE TABLE IF NOT EXISTS products (
-//        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-//        name VARCHAR(255) NOT NULL,
-//        description TEXT NOT NULL,
-//        price INT NOT NULL,
-//        category VARCHAR(255) NOT NULL,
-//        image_url VARCHAR(255) NOT NULL,
-//        stock VARCHAR(255) NOT NULL
-//      );
-//    `;
-//   const insertedProducts = await Promise.all(
-//     products.map(
-//       (product) => client.sql`
-//          INSERT INTO products (id, name, description, price, category, image_url, stock)
-//          VALUES (${product.id}, ${product.name}, ${product.description}, ${product.price}, ${product.category}, ${product.image_url}, ${product.stock})
-//          ON CONFLICT (id) DO NOTHING;
-//        `
-//     )
-//   );
-//   return insertedProducts;
-// }
+async function seedProducts() {
+  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+  await client.sql`
+     CREATE TABLE IF NOT EXISTS products (
+       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+       name VARCHAR(255) NOT NULL,
+       description TEXT NOT NULL,
+       price INT NOT NULL,
+       category VARCHAR(255) NOT NULL,
+       image_url VARCHAR(255) NOT NULL,
+       stock VARCHAR(255) NOT NULL
+     );
+   `;
+  const insertedProducts = await Promise.all(
+    products.map(
+      (product) => client.sql`
+         INSERT INTO products (id, name, description, price, category, image_url, stock)
+         VALUES (${product.id}, ${product.name}, ${product.description}, ${product.price}, ${product.category}, ${product.image_url}, ${product.stock})
+         ON CONFLICT (id) DO NOTHING;
+       `
+    )
+  );
+  return insertedProducts;
+}
 
 export async function GET() {}
 export async function POST() {
@@ -125,6 +125,7 @@ export async function POST() {
     await seedCustomers();
     await seedInvoices();
     await seedRevenue();
+    await seedProducts();
     await client.sql`COMMIT`;
 
     return Response.json({ message: "Database seeded successfully" });

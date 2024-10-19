@@ -301,43 +301,6 @@ export async function fetchFilteredProducts(query: string) {
   }
 }
 
-export async function fetchCategories() {
-  try {
-    const data = await sql<CategoryField>`
-      SELECT
-        id,
-        name
-      FROM categories
-      ORDER BY name ASC
-    `;
-
-    const categories = data.rows;
-    return categories;
-  } catch (err) {
-    console.error("Database Error:", err);
-    throw new Error("Failed to fetch all categories.");
-  }
-}
-
-export async function fetchFilteredCategories(query: string) {
-  try {
-    const data = await sql<CategoryField>`
-      SELECT
-        id,
-        name
-      FROM categories
-      WHERE
-        name ILIKE ${`%${query}%`}
-      ORDER BY name ASC
-    `;
-
-    const categories = data.rows;
-    return categories;
-  } catch (err) {
-    console.error("Database Error:", err);
-    throw new Error("Failed to fetch categories.");
-  }
-}
 
 export async function fetchProductsPages(query: string, currentPage: number) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
