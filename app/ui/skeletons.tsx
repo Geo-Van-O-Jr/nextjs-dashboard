@@ -284,11 +284,15 @@ export function ProductsTableSkeleton() {
                     <th scope="col" className="px-3 py-5 font-medium">
                       Stock
                     </th>
+                    <th scope="col" className="px-3 py-5 font-medium">
+                      Image
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 text-gray-900">
                   <TableRowSkeleton />
                   <TableRowSkeleton />                  
+                  <TableRowSkeleton />
                   <TableRowSkeleton />
                   <TableRowSkeleton />
                 </tbody>
