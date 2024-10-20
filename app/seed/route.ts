@@ -105,7 +105,7 @@ async function seedProducts() {
     products.map(
       (product) => client.sql`
          INSERT INTO products (id, name, description, price, image_url, stock)
-         VALUES (${product.id}, ${product.name}, ${product.description}, ${product.price}, ${product.category}, ${product.image_url}, ${product.stock})
+         VALUES (${product.id}, ${product.name}, ${product.description}, ${product.price},${product.image_url}, ${product.stock})
          ON CONFLICT (id) DO NOTHING;
        `
     )
