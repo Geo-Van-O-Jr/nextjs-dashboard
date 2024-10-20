@@ -101,7 +101,7 @@ export type FormattedProductsTable = {
   id: string;
   name: string;
   description: string;
-  price: string;
+  price: number;
   category: string;
   image_url: string;
   stock: string;

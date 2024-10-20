@@ -16,7 +16,7 @@ export default async function ProductsTable({
     const [fetchedProducts, setFetchedProducts] = useState<ProductsTableType[]>([]);
     useEffect(() => {
       const fetchProducts = async () => {
-        const data = await fetch('/api/products');
+        const data = await fetch('http://localhost:3000/dashboard/products');
         const fetchedProducts = await data.json();
         setFetchedProducts(fetchedProducts);
         
@@ -88,6 +88,10 @@ export default async function ProductsTable({
                     <th scope="col" className="px-3 py-5 font-medium">
                       Stock
                     </th>
+                    <th scope="col" className="px-3 py-5 font-medium">
+                      Image
+                    </th>
+                    <th></th>
                   </tr>
                 </thead>
 
