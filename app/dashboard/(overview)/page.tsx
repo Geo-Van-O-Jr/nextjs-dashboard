@@ -1,31 +1,101 @@
-import CardWrapper from "@/app/ui/dashboard/cards";
-import RevenueChart from "@/app/ui/dashboard/revenue-chart";
-import LatestInvoices from "@/app/ui/dashboard/latest-invoices";
-import { lusitana } from "@/app/ui/fonts";
+import { lusitana } from "app/ui/fonts";
+import Link from "next/link";
+import {
+  BuildingStorefrontIcon,
+  CurrencyDollarIcon,
+  ShoppingBagIcon,
+  ClipboardDocumentListIcon,
+  DocumentDuplicateIcon,
+} from "@heroicons/react/24/outline";
+import Dashboard from "@/app/dashboard/dashboard-panel/page";
 
-import { Suspense } from "react";
-import { RevenueChartSkeleton } from "@/app/ui/skeletons";
-import { LatestInvoicesSkeleton } from "@/app/ui/skeletons";
-import { CardsSkeleton } from "@/app/ui/skeletons";
+const quickAccessLinks = [
+  {
+    section: "Cadastros",
+    icon: BuildingStorefrontIcon,
+    links: [
+      { name: "Novo fornecedor", href: "/cadastros/fornecedor" },
+      { name: "Novo produto", href: "/cadastros/produto" },
+      { name: "Novo cliente", href: "/cadastros/cliente" },
+      
+    ],
+  },
+  {
+    section: "Financeiro",
+    icon: CurrencyDollarIcon,
+    links: [
+      { name: "Novo boleto", href: "/financeiro/boleto" },
+      { name: "Mensalidades", href: "/financeiro/mensalidades" },
+      { name: "Nova conta a pagar", href: "/financeiro/pagar" },
+      { name: "Nova conta a receber", href: "/financeiro/receber" },
+    ],
+  },
+  {
+    section: "Vendas",
+    icon: ShoppingBagIcon,
+    links: [
+      { name: "Novo orçamento", href: "/vendas/orcamento" },
+      { name: "Faturamento", href: "/vendas/faturamento" },
+      { name: "Fechamento de caixa", href: "/vendas/caixa" },
+    ],
+  },
+  {
+    section: "Estoque",
+    icon: ClipboardDocumentListIcon,
+    links: [
+      { name: "Nova movimentação", href: "/estoque/movimentacao" },
+      { name: "Novo local estoque", href: "/estoque/local" },
+    ],
+  },
+  {
+    section: "Fiscal",
+    icon: DocumentDuplicateIcon,
+    links: [
+      { name: "Lançar documento fiscal", href: "/fiscal/lancar" },
+      { name: "Emitir nota fiscal", href: "/fiscal/emitir" },
+    ],
+  },
+];
 
 export default async function Page() {
   return (
     <main>
-      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-        Dashboard
-      </h1>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Suspense fallback={<CardsSkeleton />}>
-          <CardWrapper />
-        </Suspense>
+      <div className="">
+        <Link href="./dashboard/" className="text-blue-500">
+          Acésso rápido
+        </Link>
       </div>
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-        <Suspense fallback={<RevenueChartSkeleton />}>
-          <RevenueChart />
-        </Suspense>
-        <Suspense fallback={<LatestInvoicesSkeleton />}>
-          <LatestInvoices />
-        </Suspense>
+      <div className="">
+        <Link href="./dashboard/dashboard-panel" className="text-blue-500">
+          Dashboard
+        </Link>
+      </div>
+
+      {/* Quick Access Section */}
+      <div className="grid gap-6 mb-8 md:grid-cols-2 lg:grid-cols-3">
+        {quickAccessLinks.map((section) => (
+          <div
+            key={section.section}
+            className="rounded-lg bg-white p-4 shadow-md"
+          >
+            <div className="flex items-center gap-2 mb-3 text-lg font-medium">
+              <section.icon className="h-6 w-6" />
+              <span>{section.section}</span>
+            </div>
+            <ul>
+              {section.links.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="block rounded-md px-3 py-2 text-sm hover:bg-gray-100"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </main>
   );

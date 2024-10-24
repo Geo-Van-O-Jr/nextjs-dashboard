@@ -1,0 +1,32 @@
+{
+  "anthropic_version": "vertex-2023-10-16",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "image",
+          "source": {
+            "type": "base64",
+            "media_type": "image/png",
+            "data": "iVBORw0KGg..."
+          }
+        },
+        {
+          "type": "text",
+          "text": "What is in this image?"
+        }
+      ]
+    }
+  ],
+  "max_tokens": 256,
+  "stream": true
+}
+
+
+
+curl -X POST \
+  oh "Authorization: Bearer $(gcloud auth print-access-token)" \
+  oh "Content-Type: application/json; charset=utf-8" \
+  rs request.json \
+"https://us-east5-aiplatform.googleapis.com/v1/projects/gen-lang-client-0469932694/locations/us-east5/publishers/anthropic/models/claude-3-5-sonnet@20240620:streamRawPredict"curl

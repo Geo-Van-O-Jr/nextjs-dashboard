@@ -219,21 +219,14 @@ export async function fetchFilteredCustomers(query: string) {
   }
 }
 
-
-
-export async function fetchProducts(query: string, currentPage: number) {
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-
+export async function fetchProducts() {
   try {
     const data = await sql<ProductField>`
       SELECT
         id,
         name
       FROM products
-      WHERE
-        products.name ILIKE ${`%${query}%`} -- Apply search query if any
       ORDER BY name ASC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
     const products = data.rows;
@@ -244,31 +237,26 @@ export async function fetchProducts(query: string, currentPage: number) {
   }
 }
 
-export async function fetchProductsForCategory(categoryId: string, currentPage: number) {
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-
+export async function fetchCategories() {
   try {
-    const data = await sql<ProductField>`
+    const data = await sql<CategoryField>`
       SELECT
         id,
         name
-      FROM products
-      WHERE 
-        products.category_id = ${categoryId} -- Assuming a category_id column
+      FROM categories
       ORDER BY name ASC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
-    const products = data.rows;
-    return products;
+    const categories = data.rows;
+    return categories;
   } catch (err) {
     console.error("Database Error:", err);
-    throw new Error("Failed to fetch products for category."); 
+    throw new Error("Failed to fetch all categories.");
   }
 }
 
 export async function fetchFilteredProducts(query: string) {
-  try {
+    try {
     const data = await sql<ProductsTableType>`
 		SELECT
 		  products.id,
@@ -297,31 +285,84 @@ export async function fetchFilteredProducts(query: string) {
     return products;
   } catch (err) {
     console.error("Database Error:", err);
-    throw new Error("Failed to fetch product table.");
+    // throw new Error("Failed to fetch product table.");
+  }
+}
+
+export async function fetchProductById(id: string) {
+  try {
+    const data = await sql<ProductField>`
+      SELECT
+        products.id,
+        products.name,
+        products.description,
+        products.price,
+        products.category,
+        products.image_url,
+        products.stock
+      FROM products
+      WHERE products.id = ${id};
+    `;
+
+    const product = data.rows.map((product) => ({
+      ...product,
+      // Convert amount from cents to dollars
+      price: product.price / 100,
+    }));
+    return product[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch product.");
   }
 }
 
 
-export async function fetchProductsPages(query: string, currentPage: number) {
+
+  
+
+export async function fetchProductsForCategory(
+  categoryId: string,
+  currentPage: number
+) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
+  try {
+    const data = await sql<ProductField>`
+      SELECT
+        id,
+        name
+      FROM products
+      WHERE 
+        products.category_id = ${categoryId} -- Assuming a category_id column
+      ORDER BY name ASC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    const products = data.rows;
+    return products;
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch products for category.");
+  }
+}
+
+
+
+export async function fetchProductsPages(query: string) {
   try {
     const count = await sql`SELECT COUNT(*)
     FROM products
     WHERE
       products.name ILIKE ${`%${query}%`} OR
-      products.description ILIKE ${`%${query}%`} OR
-      products.price::text ILIKE ${`%${query}%`} OR
       products.category ILIKE ${`%${query}%`} OR
-      products.image_url ILIKE ${`%${query}%`} OR
-      products.stock ILIKE ${`%${query}%`}
+      
   `;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch total number of products.");
+    // throw new Error("Failed to fetch total number of products.");
   }
 }
 

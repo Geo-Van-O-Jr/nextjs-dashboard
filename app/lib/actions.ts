@@ -178,7 +178,7 @@ const ProductSchema = z.object({
 const CreateProduct = ProductSchema.omit({ id: true });
 const UpdateProduct = ProductSchema.omit({ id: true });
 
-export async function createProduct(prevState: State, formData: FormData) {
+export async function createProduct(prevState: ProductState, formData: FormData) {
   const validatedFields = CreateProduct.safeParse({
     name: formData.get("name"),
     description: formData.get("description"),
